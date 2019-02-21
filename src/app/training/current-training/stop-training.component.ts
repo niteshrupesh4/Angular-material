@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
     template: `
     <h1 mat-dialog-title> Are you sure?</h1>
     <mat-dialog-content>
-    <p> You already got {{ paddData.progress }}%</p> 
+    <p> You already got {{ paddData.progress }}%</p>
     </mat-dialog-content>
     <mat-dialog-actions>
     <button mat-button [mat-dialog-close]="true">Yes</button>
@@ -15,7 +15,5 @@ import { MAT_DIALOG_DATA } from '@angular/material';
     `
 })
 export class StopTrainingComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public paddData: any) {
-        
-    }
+    constructor(@Inject(MAT_DIALOG_DATA) public paddData: any) { }
 }

@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AuthService } from './auth/auth.service';
+import { TrainingService } from './training/training.service';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -44,7 +45,8 @@ import { StopTrainingComponent } from './training/current-training/stop-training
     ReactiveFormsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    TrainingService
   ],
   bootstrap: [AppComponent],
   entryComponents: [StopTrainingComponent]
