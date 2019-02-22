@@ -3,6 +3,7 @@ import { Subject, Subscription } from 'rxjs';
 import { Exercise } from './exercise.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { UIServise } from '../shared/ui.service';
 
 @Injectable()
 export class TrainingService {
@@ -20,27 +21,35 @@ export class TrainingService {
   private runningExercises: Exercise;
   private fbSubscription: Subscription[] = [];
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore,
+    private uiService: UIServise) { }
 
   fetchAvailableExercises() {
-    // return this.availableExerices.slice();
+    this.uiService.lodingStateChanged.next(true);
     this.fbSubscription.push(this.db
       .collection('availableExercises')
       .snapshotChanges()
       .pipe(
         map(res => {
+          // throw(new Error());
           return res.map(a => {
             return {
               id: a.payload.doc.id,
               name: a.payload.doc.data().name,
               duration: a.payload.doc.data().duration,
-              calories: a.payload.doc.data().calories,
+              calories: a.payload.doc.data().calories
             };
           });
         })
       ).subscribe((exercises: Exercise[]) => {
+        this.uiService.lodingStateChanged.next(false);
         this.availableExerices = exercises;
         this.exercisesChanged.next([...this.availableExerices]);
+      }, error => {
+        this.uiService.lodingStateChanged.next(false);
+        this.uiService.showSnackbar(
+          'Fetching exercises failed, please try again later', null, 4000);
+        this.exercisesChanged.next(null);
       })
     );
   }
